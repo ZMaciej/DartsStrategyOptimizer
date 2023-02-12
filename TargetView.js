@@ -64,6 +64,7 @@ class TargetView
         strokeWeight(5);
         fill(256);
         textAlign(CENTER);
+        push();
         translate(xloc, yloc);
         var angleStep = 360 / 20;
         for (let i = 0; i < 20; i++)
@@ -79,6 +80,7 @@ class TargetView
             text(scoringInfo.BasicScoreValues[i], 0, 0 - textBaseRadius);
             pop();
         }
+        pop();
     }
 
     drawTarget(xloc, yloc, size, num)

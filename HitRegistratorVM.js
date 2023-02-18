@@ -9,17 +9,28 @@ class HitRegistratorVM
         this._centerX = targetView.CenterX;
         this._centerY = targetView.CenterY;
         var that = this;
-        this.HitRegistrator.HitEvent.addCallback(function ()
+        this.HitRegistrator.HitEvent.addCallback(function (hitRegisteredEventEnum)
         {
-            that.updateHitVMArray();
-            that.HitEvent.trigger();
+            that.updateHitVMArray(hitRegisteredEventEnum);
+            that.HitEvent.trigger(hitRegisteredEventEnum);
         });
     }
 
-    updateHitVMArray()
+    updateHitVMArray(hitRegisteredEventEnum)
     {
-        var hit = this.HitRegistrator.HitArray.at(-1);
-        var hitVM = new HitVM((hit.x * this._scale) + this._centerX, -(hit.y * this._scale) + this._centerY);
-        this.HitVMArray.push(hitVM);
+        if (hitRegisteredEventEnum == HitRegisteredEventEnum.AddedLast)
+        {
+            var hit = this.HitRegistrator.HitArray.at(-1);
+            var hitVM = new HitVM((hit.x * this._scale) + this._centerX, -(hit.y * this._scale) + this._centerY);
+            this.HitVMArray.push(hitVM);
+        }
+        if (hitRegisteredEventEnum == HitRegisteredEventEnum.RemovedLast)
+        {
+            this.HitVMArray.pop();
+        }
+        if (hitRegisteredEventEnum == HitRegisteredEventEnum.Cleared)
+        {
+            this.HitVMArray.length = 0;
+        }
     }
 }

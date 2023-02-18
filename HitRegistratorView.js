@@ -4,7 +4,7 @@ class HitRegistratorView
     {
         this.HitRegistratorVM = hitRegistratorVM;
         var that = this;
-        this.HitRegistratorVM.HitEvent.addCallback(function ()
+        this.HitRegistratorVM.HitEvent.addCallback(function (hitRegisteredEventEnum)
         {
             that.drawHits();
         });

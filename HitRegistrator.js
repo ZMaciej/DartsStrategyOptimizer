@@ -10,6 +10,18 @@ class HitRegistrator
     {
         var hit = new Hit(x, y, score);
         this.HitArray.push(hit);
-        this.HitEvent.trigger();
+        this.HitEvent.trigger(HitRegisteredEventEnum.AddedLast);
+    }
+
+    removeHit()
+    {
+        this.HitArray.pop();
+        this.HitEvent.trigger(HitRegisteredEventEnum.RemovedLast);
+    }
+
+    clearHits()
+    {
+        this.HitArray.length = 0;
+        this.HitEvent.trigger(HitRegisteredEventEnum.Cleared);
     }
 }

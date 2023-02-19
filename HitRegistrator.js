@@ -24,4 +24,10 @@ class HitRegistrator
         this.HitArray.length = 0;
         this.HitEvent.trigger(HitRegisteredEventEnum.Cleared);
     }
+
+    addAll(array)
+    {
+        this.HitArray = array;
+        this.HitEvent.trigger(HitRegisteredEventEnum.AddedAll);
+    }
 }

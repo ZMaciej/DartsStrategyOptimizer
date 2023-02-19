@@ -32,5 +32,14 @@ class HitRegistratorVM
         {
             this.HitVMArray.length = 0;
         }
+        if (hitRegisteredEventEnum == HitRegisteredEventEnum.AddedAll)
+        {
+            this.HitVMArray.length = 0;
+            this.HitRegistrator.HitArray.forEach(hit =>
+            {
+                var hitVM = new HitVM((hit.x * this._scale) + this._centerX, -(hit.y * this._scale) + this._centerY);
+                this.HitVMArray.push(hitVM);
+            });
+        }
     }
 }

@@ -1,14 +1,20 @@
 function setup()
 {
-    canvasWidth = 900;
-    canvasHeight = 900;
+    canvasWidth = 850;
+    canvasHeight = 850;
     hitRegistrator = new HitRegistrator();
-    createCanvas(canvasWidth, canvasHeight);
+    hitRegistratorManager = new HitRegistratorManager(hitRegistrator);
+    canvas = createCanvas(canvasWidth, canvasHeight);
+    canvas.parent("canvas");
     background(255);
     noStroke();
     // frameRate(5);
     noLoop();
     setUpInterface();
+    $.getJSON("data/example.json", function (json)
+    {
+        hitRegistratorManager._loadFromJson(json);
+    });
 }
 
 function draw()
@@ -45,6 +51,6 @@ function setUpInterface()
 {
     $('#buttonBack').on('click', function () { hitRegistrator.removeHit() });
     $('#buttonClear').on('click', function () { hitRegistrator.clearHits() });
-    $('#buttonExample').on('click', function () { });
-    $('#buttonCompute').on('click', function () { });
+    $('#buttonExample').on('click', function () { hitRegistratorManager.load() });
+    $('#buttonCompute').on('click', function () { hitRegistratorManager.save() });
 }

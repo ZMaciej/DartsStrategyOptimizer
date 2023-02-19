@@ -1,0 +1,35 @@
+:root {
+    --MainColor: #000000;
+    --SecondaryColor: #838383;
+    --SecondaryColorLight: #d4d4d4;
+    --LightGrey: #e6e6e6;
+    --MidGrey: #a6a6a6;
+    --LightGreyTrans: #5c5c5c33;
+  }
+
+.actionButton {
+    box-shadow: none;
+    border-color: transparent;
+    background-color: var(--LightGreyTrans);
+    z-index: 9998;
+    font-size:x-large;
+    margin: 10 10 15 10;
+  }
+  
+  .actionButton:hover {
+    border-color: transparent !important;
+    background-color: var(--SecondaryColor) !important;
+  }
+  
+  .actionButton:active {
+    box-shadow: none !important;
+    border-color: transparent !important;
+    background-color: var(--MainColor) !important;
+    /*on click*/
+  }
+  
+  .actionButton:focus {
+    box-shadow: none;
+    border-color: transparent !important;
+    background-color: var(--LightGreyTrans);
+  }

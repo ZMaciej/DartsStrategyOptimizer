@@ -2,5 +2,6 @@ const HitRegisteredEventEnum =
 {
     AddedLast: 'AddedLast',
     RemovedLast: 'RemovedLast',
-    Cleared: 'Cleared'
+    Cleared: 'Cleared',
+    AddedAll: 'AddedAll'
 };

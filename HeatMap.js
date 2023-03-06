@@ -42,7 +42,7 @@ class HeatMap
             for (let j = 0; j < this.Resolution; j++)
             {
                 x = i * width - this.TargetDimensions.bigRadius;
-                y = j * width - this.TargetDimensions.bigRadius;
+                y = this.TargetDimensions.bigRadius - j * width;
                 // https://en.wikipedia.org/wiki/Multivariate_normal_distribution
                 // implementation of Bivariate case
                 this.HeatMatrix[i][j] = factor1 * Math.exp(factor2 * (

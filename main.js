@@ -2,8 +2,12 @@ function setup()
 {
     canvasWidth = 850;
     canvasHeight = 850;
+    calculationResolution = 85;
+    targetDimensions = new TargetDimensions();
     hitRegistrator = new HitRegistrator();
     hitRegistratorManager = new HitRegistratorManager(hitRegistrator);
+    heatMap = new HeatMap(calculationResolution, hitRegistrator,
+        targetDimensions);
     canvas = createCanvas(canvasWidth, canvasHeight);
     canvas.parent("canvas");
     background(255);
@@ -11,21 +15,23 @@ function setup()
     // frameRate(5);
     noLoop();
     setUpInterface();
+    example = null;
     $.getJSON("data/example.json", function (json)
     {
-        hitRegistratorManager._loadFromJson(json);
+        example = json;
     });
 }
 
 function draw()
 {
-    targetDimensions = new TargetDimensions();
     scoringInfo = new ScoringInfo();
     targetView = new TargetView(targetDimensions, scoringInfo);
     targetView.draw(0, 0, canvasWidth, canvasHeight);
     hitRegistratorVM = new HitRegistratorVM(hitRegistrator, targetView);
     hitRegistratorView = new HitRegistratorView(hitRegistratorVM);
     scoreCalculator = new ScoreCalculator(scoringInfo, targetDimensions);
+    heatMapView = new HeatMapView(heatMap);
+    heatMapView.draw(0, 0, canvasWidth, canvasHeight);
 }
 
 function mouseClicked(event)
@@ -41,6 +47,7 @@ function mouseClicked(event)
     background(255);
     targetView.draw(0, 0, canvasWidth, canvasHeight);
     hitRegistratorView.drawHits();
+    heatMapView.draw(0, 0, canvasWidth, canvasHeight);
 }
 
 function mouseMoved()
@@ -51,6 +58,15 @@ function setUpInterface()
 {
     $('#buttonBack').on('click', function () { hitRegistrator.removeHit() });
     $('#buttonClear').on('click', function () { hitRegistrator.clearHits() });
-    $('#buttonExample').on('click', function () { hitRegistratorManager.load() });
-    $('#buttonCompute').on('click', function () { hitRegistratorManager.save() });
+    $('#buttonExample').on('click', function ()
+    {
+        hitRegistrator.clearHits()
+        hitRegistratorManager._loadFromJson(example);
+    });
+    $('#buttonCompute').on('click',
+        function ()
+        {
+            heatMap.calculateNormalDistributionParameters();
+            console.log(heatMap);
+        });
 }

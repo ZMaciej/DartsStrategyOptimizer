@@ -35,10 +35,10 @@ class TargetView
         for (let i = 0; i < 20; i++)
         {
             var angle = (radians(startAngle + i * angleStep));
-            line(this.CenterX - sin(angle) * targetDimensionsVM.bigDiameter / 2,
-                this.CenterY - cos(angle) * targetDimensionsVM.bigDiameter / 2,
-                this.CenterX + sin(angle) * targetDimensionsVM.bigDiameter / 2,
-                this.CenterY + cos(angle) * targetDimensionsVM.bigDiameter / 2);
+            line(this.CenterX + sin(angle) * (targetDimensionsVM.bigDiameter / 2),
+                this.CenterY + cos(angle) * (targetDimensionsVM.bigDiameter / 2),
+                this.CenterX + sin(angle) * (targetDimensionsVM.smallDiameter / 2),
+                this.CenterY + cos(angle) * (targetDimensionsVM.smallDiameter / 2));
         }
         this.drawCircle(this.CenterX, this.CenterY, targetDimensionsVM.smallDiameter);
         this.drawCircle(this.CenterX, this.CenterY, targetDimensionsVM.smallMultiplierDiameter);
@@ -60,9 +60,9 @@ class TargetView
     drawNumbers(xloc, yloc, textBaseRadius, textHeight, scoringInfo)
     {
         textSize(textHeight);
-        stroke(0, 0, 0);
+        stroke(255, 255, 255, 0);
         strokeWeight(5);
-        fill(256);
+        fill(0);
         textAlign(CENTER);
         push();
         translate(xloc, yloc);
@@ -83,21 +83,10 @@ class TargetView
         pop();
     }
 
-    drawTarget(xloc, yloc, size, num)
-    {
-        const grayvalues = 255 / num;
-        const steps = size / num;
-        for (let i = 0; i < num; i++)
-        {
-            fill(i * grayvalues);
-            ellipse(xloc, yloc, size - i * steps, size - i * steps);
-        }
-    }
-
     drawCircle(xloc, yloc, size)
     {
         stroke(0);
-        fill(255, 255, 255);
+        fill(255, 255, 255, 0);
         circle(xloc, yloc, size);
     }
 }

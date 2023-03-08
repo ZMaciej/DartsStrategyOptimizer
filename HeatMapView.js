@@ -17,7 +17,7 @@ class HeatMapView
             for (let y = 0; y < this.Resolution; y++)
             {
                 var colorScale = new ColorScale();
-                fill(colorScale.calculate(this.HeatMap.HeatMatrix[x][y]));
+                fill(colorScale.calculate(this.HeatMap.HeatMatrix[x][y], this.HeatMap.minValue, this.HeatMap.maxValue));
                 rect(xOffset + x * xStep, yOffset + y * yStep, xStep, yStep);
             }
         }

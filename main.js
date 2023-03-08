@@ -7,31 +7,35 @@ function setup()
     hitRegistrator = new HitRegistrator();
     hitRegistratorManager = new HitRegistratorManager(hitRegistrator);
     heatMap = new HeatMap(calculationResolution, hitRegistrator,
-        targetDimensions);
+        targetDimensions, 0.85);
     canvas = createCanvas(canvasWidth, canvasHeight);
     canvas.parent("canvas");
     background(255);
     noStroke();
-    // frameRate(5);
     noLoop();
     setUpInterface();
+    scoringInfo = new ScoringInfo();
+    targetView = new TargetView(targetDimensions, scoringInfo);
+    targetView.draw(0, 0, canvasWidth, canvasHeight);
+    heatMapView = new HeatMapView(heatMap);
+    hitRegistratorVM = new HitRegistratorVM(hitRegistrator, targetView);
+    hitRegistratorView = new HitRegistratorView(hitRegistratorVM);
+    scoreCalculator = new ScoreCalculator(scoringInfo, targetDimensions);
+
     example = null;
     $.getJSON("data/example.json", function (json)
     {
         example = json;
+        hitRegistratorManager._loadFromJson(example);
+        heatMapView.draw(0, 0, canvasWidth, canvasHeight);
+        targetView.draw(0, 0, canvasWidth, canvasHeight);
+        hitRegistratorView.drawHits();
     });
 }
 
 function draw()
 {
-    scoringInfo = new ScoringInfo();
-    targetView = new TargetView(targetDimensions, scoringInfo);
-    targetView.draw(0, 0, canvasWidth, canvasHeight);
-    hitRegistratorVM = new HitRegistratorVM(hitRegistrator, targetView);
-    hitRegistratorView = new HitRegistratorView(hitRegistratorVM);
-    scoreCalculator = new ScoreCalculator(scoringInfo, targetDimensions);
-    heatMapView = new HeatMapView(heatMap);
-    heatMapView.draw(0, 0, canvasWidth, canvasHeight);
+
 }
 
 function mouseClicked(event)
@@ -45,9 +49,9 @@ function mouseClicked(event)
         hitRegistrator.addHit(position[0], position[1], score);
     }
     background(255);
+    heatMapView.draw(0, 0, canvasWidth, canvasHeight);
     targetView.draw(0, 0, canvasWidth, canvasHeight);
     hitRegistratorView.drawHits();
-    heatMapView.draw(0, 0, canvasWidth, canvasHeight);
 }
 
 function mouseMoved()

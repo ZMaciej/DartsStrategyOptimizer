@@ -1,10 +1,11 @@
 class HeatMap
 {
-    constructor(resolution, hitRegistrator, targetDimensions)
+    constructor(resolution, hitRegistrator, targetDimensions, targetHeightPercentage)
     {
         this.HitRegistrator = hitRegistrator;
         this.Resolution = resolution;
         this.TargetDimensions = targetDimensions;
+        this.TargetHeightPercentage = targetHeightPercentage;
         this.HeatMatrix = new Array(this.Resolution);
         for (let i = 0; i < this.HeatMatrix.length; i++)
         {
@@ -16,6 +17,8 @@ class HeatMap
         this.StandardDeviationX = 0;
         this.StandardDeviationY = 0;
         this.Correlation = 0;
+        this.maxValue = 0;
+        this.minValue = 0;
 
         let that = this;
         this.HitRegistrator.HitEvent.addCallback(
@@ -37,12 +40,14 @@ class HeatMap
             (2 * Math.PI * this.StandardDeviationX * this.StandardDeviationY +
                 Math.sqrt(1 - this.Correlation * this.Correlation));
         var factor2 = - 1 / (2 * (1 - this.Correlation * this.Correlation));
+        this.maxValue = 0;
+        this.minValue = Number.MAX_VALUE;
         for (let i = 0; i < this.Resolution; i++) 
         {
             for (let j = 0; j < this.Resolution; j++)
             {
-                x = i * width - this.TargetDimensions.bigRadius;
-                y = this.TargetDimensions.bigRadius - j * width;
+                x = (i * width + width / 2 - this.TargetDimensions.bigRadius) / this.TargetHeightPercentage;
+                y = (this.TargetDimensions.bigRadius - j * width - width / 2) / this.TargetHeightPercentage;
                 // https://en.wikipedia.org/wiki/Multivariate_normal_distribution
                 // implementation of Bivariate case
                 this.HeatMatrix[i][j] = factor1 * Math.exp(factor2 * (
@@ -51,6 +56,10 @@ class HeatMap
                     2 * this.Correlation *
                     ((x - this.MeanX) / this.StandardDeviationX) *
                     ((y - this.MeanY) / this.StandardDeviationY)));
+                if (this.HeatMatrix[i][j] > this.maxValue)
+                    this.maxValue = this.HeatMatrix[i][j];
+                else if (this.HeatMatrix[i][j] < this.minValue)
+                    this.minValue = this.HeatMatrix[i][j];
             }
         }
         console.log(this);

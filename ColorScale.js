@@ -5,18 +5,19 @@ class ColorScale
 
     }
 
-    calculate(value)
+    calculate(value, minValue, maxValue)
     {
-        if (isNaN(value) || value == undefined)
+        var span = maxValue - minValue;
+        if (isNaN(value) || value == undefined || span == 0)
         {
-            return color(0, 0, 0, 100);
+            return color(255, 255, 255, 100);
         }
         else
         {
-            value = value * 10000;
-            var colors = new Array(new Array(0, 0, 0), new Array(0, 0, 1),
+            value = (value - minValue) / span;
+            var colors = new Array(new Array(1, 1, 1), new Array(0, 0, 1),
                 new Array(0, 1, 1), new Array(0, 1, 0), new Array(1, 1, 0),
-                new Array(1, 0, 0), new Array(1, 1, 1));
+                new Array(1, 0, 0), new Array(0, 0, 0));
             var numColors = colors.length;
 
 

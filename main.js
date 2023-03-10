@@ -16,7 +16,7 @@ function setup()
     setUpInterface();
     scoringInfo = new ScoringInfo();
     targetView = new TargetView(targetDimensions, scoringInfo);
-    targetView.draw(0, 0, canvasWidth, canvasHeight);
+    targetView.calculateParameters(0, 0, canvasWidth, canvasHeight);
     heatMapView = new HeatMapView(heatMap);
     hitRegistratorVM = new HitRegistratorVM(hitRegistrator, targetView);
     hitRegistratorView = new HitRegistratorView(hitRegistratorVM);
@@ -28,7 +28,7 @@ function setup()
         example = json;
         hitRegistratorManager._loadFromJson(example);
         heatMapView.draw(0, 0, canvasWidth, canvasHeight);
-        targetView.draw(0, 0, canvasWidth, canvasHeight);
+        targetView.draw();
         hitRegistratorView.drawHits();
     });
 }

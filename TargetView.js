@@ -3,6 +3,7 @@ class TargetView
     constructor(targetDimensions, scoringInfo)
     {
         this.TargetDimensions = targetDimensions;
+        this.TargetHeightPercentage = 0.85;
         this.ScoringInfo = scoringInfo;
         this.LocalScale = 0;
         this.XOffset = 0;
@@ -11,43 +12,64 @@ class TargetView
         this.Height = 0;
         this.CenterX = 0;
         this.CenterY = 0;
+        this._targetDimensionsVM = null;
     }
 
-    draw(xOffset, yOffset, width, height)
+    calculateParameters(xOffset, yOffset, width, height)
     {
         this.XOffset = xOffset;
         this.YOffset = yOffset;
         this.Width = width;
         this.Height = height;
-        var targetHeightPercentage = 0.85;
-        this.LocalScale = this.Height / this.TargetDimensions.bigDiameter * targetHeightPercentage;
+        this.LocalScale = this.Height / this.TargetDimensions.bigDiameter
+            * this.TargetHeightPercentage;
+        this._targetDimensionsVM =
+            new TargetDimsVM(this.LocalScale, this.TargetDimensions);
         this.CenterX = this.XOffset + this.Width * 0.5;
         this.CenterY = this.YOffset + this.Height * 0.5;
+    }
+
+    draw()
+    {
+        var bigDiameter = this._targetDimensionsVM.bigDiameter;
+        var mediumDiameter = this._targetDimensionsVM.mediumDiameter;
+        var smallDiameter = this._targetDimensionsVM.smallDiameter;
+        var doubleMultiplierWidth =
+            this._targetDimensionsVM.doubleMultiplierWidth;
+        var trippleMultiplierWidth =
+            this._targetDimensionsVM.trippleMultiplierWidth;
+        var smallMultiplierDiameter =
+            this._targetDimensionsVM.smallMultiplierDiameter;
+
         strokeWeight(3);
-        var targetDimensionsVM = new TargetDimsVM(this.LocalScale, this.TargetDimensions);
         stroke(0);
-        this.drawCircle(this.CenterX, this.CenterY, targetDimensionsVM.bigDiameter);
-        this.drawCircle(this.CenterX, this.CenterY, targetDimensionsVM.bigDiameter - 2 * targetDimensionsVM.doubleMultiplierWidth);
-        this.drawCircle(this.CenterX, this.CenterY, targetDimensionsVM.mediumDiameter);
-        this.drawCircle(this.CenterX, this.CenterY, targetDimensionsVM.mediumDiameter - 2 * targetDimensionsVM.trippleMultiplierWidth);
+        this.drawCircle(this.CenterX, this.CenterY, bigDiameter);
+        this.drawCircle(this.CenterX, this.CenterY, bigDiameter
+            - 2 * doubleMultiplierWidth);
+        this.drawCircle(this.CenterX, this.CenterY, mediumDiameter);
+        this.drawCircle(this.CenterX, this.CenterY, mediumDiameter
+            - 2 * trippleMultiplierWidth);
         var angleStep = 360 / 20;
         var startAngle = angleStep / 2;
         for (let i = 0; i < 20; i++)
         {
             var angle = (radians(startAngle + i * angleStep));
-            line(this.CenterX + sin(angle) * (targetDimensionsVM.bigDiameter / 2),
-                this.CenterY + cos(angle) * (targetDimensionsVM.bigDiameter / 2),
-                this.CenterX + sin(angle) * (targetDimensionsVM.smallDiameter / 2),
-                this.CenterY + cos(angle) * (targetDimensionsVM.smallDiameter / 2));
+            line(this.CenterX + sin(angle) * (bigDiameter / 2),
+                this.CenterY + cos(angle) * (bigDiameter / 2),
+                this.CenterX + sin(angle) * (smallDiameter / 2),
+                this.CenterY + cos(angle) * (smallDiameter / 2));
         }
-        this.drawCircle(this.CenterX, this.CenterY, targetDimensionsVM.smallDiameter);
-        this.drawCircle(this.CenterX, this.CenterY, targetDimensionsVM.smallMultiplierDiameter);
-        var labelHeightPercentage = 1 - targetHeightPercentage;
+        this.drawCircle(this.CenterX, this.CenterY, smallDiameter);
+        this.drawCircle(this.CenterX, this.CenterY, smallMultiplierDiameter);
+        var labelHeightPercentage = 1 - this.TargetHeightPercentage;
         var marginPercentage = 0.4; //percentage of the margin in text label
-        var textHeightPercentage = labelHeightPercentage - (labelHeightPercentage * marginPercentage);
+        var textHeightPercentage = labelHeightPercentage
+            - (labelHeightPercentage * marginPercentage);
         var textHeight = this.Height * textHeightPercentage * 0.66;
-        var marginHeight = this.Height * labelHeightPercentage * marginPercentage / 2;
-        this.drawNumbers(this.CenterX, this.CenterY, targetDimensionsVM.bigDiameter * 0.5 + marginHeight / 2, textHeight, this.ScoringInfo);
+        var marginHeight = this.Height * labelHeightPercentage
+            * marginPercentage / 2;
+        this.drawNumbers(this.CenterX, this.CenterY,
+            bigDiameter * 0.5 + marginHeight / 2, textHeight, this.ScoringInfo);
     }
 
     getRelativeScoreBoardMousePosition()

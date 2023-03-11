@@ -1,3 +1,8 @@
+function preload()
+{
+    MontserratFont = loadFont('style/Montserrat-Regular.ttf');
+}
+
 function setup()
 {
     canvasWidth = 850;

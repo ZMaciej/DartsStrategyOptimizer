@@ -81,6 +81,7 @@ class TargetView
 
     drawNumbers(xloc, yloc, textBaseRadius, textHeight, scoringInfo)
     {
+        textFont(MontserratFont);
         textSize(textHeight);
         stroke(255, 255, 255, 0);
         strokeWeight(5);

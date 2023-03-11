@@ -15,12 +15,12 @@ class OptimalPointCalculator
         var xx = 0;
         var yy = 0;
         var centeredHeatMap =
-            this.DistributionCalculator.createCenteredDistributionHeatMap(
+            this.DistributionCalculator.createDistributionHeatMap(
                 this.AverageScoreHeatMap.Resolution);
-        var distributionHeatMap = this.DistributionCalculator.HeatMap;
         var targetDimensions = this.DistributionCalculator.TargetDimensions;
         let fullWidth = targetDimensions.bigDiameter;
         let width = fullWidth / centeredHeatMap.Resolution;
+        this.AverageScoreHeatMap.resetMinMaxValues();
         for (let i = 0; i < centeredHeatMap.Resolution; i++)
         {
             for (let j = 0; j < centeredHeatMap.Resolution; j++)
@@ -40,8 +40,8 @@ class OptimalPointCalculator
                             var score2 = this.ScoreCalculator.getScore(xx, yy);
                             if (score2 > 0)
                             {
-                                let iii = centeredHeatMap.Resolution / 2 + ii;
-                                let jjj = centeredHeatMap.Resolution / 2 + jj;
+                                let iii = centeredHeatMap.Resolution / 2 + i - ii;
+                                let jjj = centeredHeatMap.Resolution / 2 + j - jj;
                                 iii = this._crop(iii, 0, centeredHeatMap.Resolution - 1);
                                 jjj = this._crop(jjj, 0, centeredHeatMap.Resolution - 1);
                                 sum += centeredHeatMap.HeatMatrix[iii][jjj] * score2;
@@ -56,6 +56,11 @@ class OptimalPointCalculator
                 }
             }
         }
+    }
+
+    calculateIntegralOfPointsTimesProbability()
+    {
+
     }
 
     _crop(value, min, max)

@@ -76,12 +76,21 @@ function calculate()
 
 function setUpInterface()
 {
-    $('#buttonBack').on('click', function () { hitRegistrator.removeHit() });
-    $('#buttonClear').on('click', function () { hitRegistrator.clearHits() });
+    $('#buttonBack').on('click', function ()
+    {
+        hitRegistrator.removeHit()
+        heatMapView.setHeatMap(heatMap);
+    });
+    $('#buttonClear').on('click', function ()
+    {
+        hitRegistrator.clearHits()
+        heatMapView.setHeatMap(heatMap);
+    });
     $('#buttonExample').on('click', function ()
     {
         hitRegistrator.clearHits()
         hitRegistratorManager._loadFromJson(example);
+        heatMapView.setHeatMap(heatMap);
     });
     $('#buttonCompute').on('click',
         function ()

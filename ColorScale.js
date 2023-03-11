@@ -8,7 +8,7 @@ class ColorScale
     calculate(value, minValue, maxValue)
     {
         var span = maxValue - minValue;
-        if (isNaN(value) || value == undefined || span == 0)
+        if (isNaN(value) || value == undefined || span == 0 || isNaN(span))
         {
             return color(255, 255, 255, 100);
         }

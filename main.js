@@ -6,8 +6,8 @@ function setup()
     targetDimensions = new TargetDimensions();
     hitRegistrator = new HitRegistrator();
     hitRegistratorManager = new HitRegistratorManager(hitRegistrator);
-    heatMap = new HeatMap(calculationResolution, hitRegistrator,
-        targetDimensions, 0.85);
+    targetHeightPercentage = 0.85;
+    heatMap = new HeatMap(calculationResolution);
     canvas = createCanvas(canvasWidth, canvasHeight);
     canvas.parent("canvas");
     background(255);
@@ -22,11 +22,17 @@ function setup()
     hitRegistratorView = new HitRegistratorView(hitRegistratorVM);
     scoreCalculator = new ScoreCalculator(scoringInfo, targetDimensions);
 
+    distributionCalculator = new DistributionCalculator(hitRegistrator,
+        targetDimensions, targetHeightPercentage, heatMap);
+    optimalPointCalculator = new OptimalPointCalculator(distributionCalculator,
+        scoreCalculator);
+
     example = null;
     $.getJSON("data/example.json", function (json)
     {
         example = json;
         hitRegistratorManager._loadFromJson(example);
+        heatMapView.setHeatMap(heatMap);
         heatMapView.draw(0, 0, canvasWidth, canvasHeight);
         targetView.draw();
         hitRegistratorView.drawHits();
@@ -47,6 +53,7 @@ function mouseClicked(event)
         score = scoreCalculator.getScore(position[0], position[1]);
         console.log("score: " + score);
         hitRegistrator.addHit(position[0], position[1], score);
+        heatMapView.setHeatMap(heatMap);
     }
     background(255);
     heatMapView.draw(0, 0, canvasWidth, canvasHeight);
@@ -56,6 +63,15 @@ function mouseClicked(event)
 
 function mouseMoved()
 {
+}
+
+function calculate()
+{
+    optimalPointCalculator.calculate();
+    heatMapView.setHeatMap(optimalPointCalculator.AverageScoreHeatMap);
+    heatMapView.draw(0, 0, canvasWidth, canvasHeight);
+    targetView.draw(0, 0, canvasWidth, canvasHeight);
+    hitRegistratorView.drawHits();
 }
 
 function setUpInterface()
@@ -70,7 +86,6 @@ function setUpInterface()
     $('#buttonCompute').on('click',
         function ()
         {
-            heatMap.calculateNormalDistributionParameters();
-            console.log(heatMap);
+            calculate();
         });
 }

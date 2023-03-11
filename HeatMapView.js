@@ -22,4 +22,9 @@ class HeatMapView
             }
         }
     }
+    setHeatMap(heatMap)
+    {
+        this.Resolution = heatMap.Resolution;
+        this.HeatMap = heatMap;
+    }
 }

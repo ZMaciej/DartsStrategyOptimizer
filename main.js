@@ -102,4 +102,8 @@ function setUpInterface()
         {
             calculate();
         });
+    $(function ()
+    {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 }

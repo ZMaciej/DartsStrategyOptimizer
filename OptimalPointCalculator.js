@@ -1,11 +1,12 @@
 class OptimalPointCalculator
 {
-    constructor(distibutionCalculator, scoreCalculator)
+    constructor(distibutionCalculator, scoreCalculator, optimalResult)
     {
         this.DistributionCalculator = distibutionCalculator;
         this.AverageScoreHeatMap = new HeatMap(
             distibutionCalculator.HeatMap.Resolution);
         this.ScoreCalculator = scoreCalculator;
+        this.OptimalResult = optimalResult;
     }
 
     calculate()
@@ -22,6 +23,9 @@ class OptimalPointCalculator
         let fullWidth = targetDimensions.bigDiameter;
         let width = fullWidth / centeredHeatMap.Resolution;
         this.AverageScoreHeatMap.resetMinMaxValues();
+        var biggestSum = 0;
+        var biggestSumX = null;
+        var biggestSumY = null;
         for (let i = 0; i < centeredHeatMap.Resolution; i++)
         {
             for (let j = 0; j < centeredHeatMap.Resolution; j++)
@@ -50,6 +54,12 @@ class OptimalPointCalculator
                         }
                     }
                     this.AverageScoreHeatMap.addValue(i, j, sum);
+                    if (sum > biggestSum)
+                    {
+                        biggestSum = sum;
+                        biggestSumX = x;
+                        biggestSumY = y;
+                    }
                 }
                 else
                 {
@@ -57,6 +67,7 @@ class OptimalPointCalculator
                 }
             }
         }
+        this.OptimalResult.setOptimalResultPoint(biggestSumX, biggestSumY);
     }
 
     calculateIntegralOfPointsTimesProbability()

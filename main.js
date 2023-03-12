@@ -5,6 +5,7 @@ function preload()
 
 function setup()
 {
+    isResultPresented = false;
     canvasWidth = 850;
     canvasHeight = 850;
     calculationResolution = 85;
@@ -27,10 +28,13 @@ function setup()
     hitRegistratorView = new HitRegistratorView(hitRegistratorVM);
     scoreCalculator = new ScoreCalculator(scoringInfo, targetDimensions);
 
+    optimalResult = new OptimalResult();
+    optimalResultVM = new OptimalResultVM(optimalResult, targetView);
+    optimalResultView = new OptimalResultView(optimalResultVM);
     distributionCalculator = new DistributionCalculator(hitRegistrator,
         targetDimensions, targetHeightPercentage, heatMap);
     optimalPointCalculator = new OptimalPointCalculator(distributionCalculator,
-        scoreCalculator);
+        scoreCalculator, optimalResult);
 
     example = null;
     $.getJSON("data/example.json", function (json)
@@ -46,7 +50,6 @@ function setup()
 
 function draw()
 {
-
 }
 
 function mouseClicked(event)
@@ -59,11 +62,18 @@ function mouseClicked(event)
         console.log("score: " + score);
         hitRegistrator.addHit(position[0], position[1], score);
         heatMapView.setHeatMap(heatMap);
+        isResultPresented = false;
     }
     background(255);
     heatMapView.draw(0, 0, canvasWidth, canvasHeight);
     targetView.draw(0, 0, canvasWidth, canvasHeight);
-    hitRegistratorView.drawHits();
+    if (isResultPresented)
+    {
+        optimalResultView.drawResult();
+    } else
+    {
+        hitRegistratorView.drawHits();
+    }
 }
 
 function mouseMoved()
@@ -74,9 +84,7 @@ function calculate()
 {
     optimalPointCalculator.calculate();
     heatMapView.setHeatMap(optimalPointCalculator.AverageScoreHeatMap);
-    heatMapView.draw(0, 0, canvasWidth, canvasHeight);
-    targetView.draw(0, 0, canvasWidth, canvasHeight);
-    hitRegistratorView.drawHits();
+    isResultPresented = true;
 }
 
 function setUpInterface()
@@ -85,17 +93,20 @@ function setUpInterface()
     {
         hitRegistrator.removeHit()
         heatMapView.setHeatMap(heatMap);
+        isResultPresented = false;
     });
     $('#buttonClear').on('click', function ()
     {
         hitRegistrator.clearHits()
         heatMapView.setHeatMap(heatMap);
+        isResultPresented = false;
     });
     $('#buttonExample').on('click', function ()
     {
         hitRegistrator.clearHits()
         hitRegistratorManager._loadFromJson(example);
         heatMapView.setHeatMap(heatMap);
+        isResultPresented = false;
     });
     $('#buttonCompute').on('click',
         function ()

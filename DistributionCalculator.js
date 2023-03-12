@@ -109,6 +109,11 @@ class DistributionCalculator
         return this.createHeatMap(resolution, 0, 0);
     }
 
+    createDistributionHeatMapWithInvertedMean(resolution)
+    {
+        return this.createHeatMap(resolution, -this.MeanX, -this.MeanY);
+    }
+
     createDistributionHeatMap(resolution)
     {
         return this.createHeatMap(resolution, this.MeanX, this.MeanY);

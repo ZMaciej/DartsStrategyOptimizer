@@ -15,8 +15,9 @@ class OptimalPointCalculator
         var xx = 0;
         var yy = 0;
         var centeredHeatMap =
-            this.DistributionCalculator.createDistributionHeatMap(
-                this.AverageScoreHeatMap.Resolution);
+            this.DistributionCalculator.
+                createDistributionHeatMapWithInvertedMean(
+                    this.AverageScoreHeatMap.Resolution);
         var targetDimensions = this.DistributionCalculator.TargetDimensions;
         let fullWidth = targetDimensions.bigDiameter;
         let width = fullWidth / centeredHeatMap.Resolution;

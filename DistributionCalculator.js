@@ -14,13 +14,19 @@ class DistributionCalculator
         this.NeedsUpdate = true;
         this.HeatMap = heatMap;
         let that = this;
+        this.update();
         this.HitRegistrator.HitEvent.addCallback(
             function (hitRegisteredEventEnum)
             {
-                that.calculateNormalDistributionParameters();
-                that.updateDistributionHeatMap(that.HeatMap.Resolution);
-                that.NeedsUpdate = true;
+                that.update();
             });
+    }
+
+    update()
+    {
+        this.calculateNormalDistributionParameters();
+        this.updateDistributionHeatMap(this.HeatMap.Resolution);
+        this.NeedsUpdate = true;
     }
 
     calculateNormalDistributionParameters()

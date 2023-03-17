@@ -8,28 +8,63 @@
   }
 
 .actionButton {
-    box-shadow: none;
-    border-color: transparent;
-    background-color: var(--LightGreyTrans);
-    z-index: 9998;
-    font-size:x-large;
-    margin: 10 10 15 10;
-  }
-  
-  .actionButton:hover {
-    border-color: transparent !important;
-    background-color: var(--SecondaryColor) !important;
-  }
-  
-  .actionButton:active {
-    box-shadow: none !important;
-    border-color: transparent !important;
-    background-color: var(--MainColor) !important;
-    /*on click*/
-  }
-  
-  .actionButton:focus {
-    box-shadow: none;
-    border-color: transparent !important;
-    background-color: var(--LightGreyTrans);
-  }
+  box-shadow: none;
+  border-color: transparent;
+  background-color: var(--LightGreyTrans);
+  z-index: 9998;
+  font-size:x-large;
+  margin: 10 10 15 10;
+}
+
+.actionButton:hover {
+  border-color: transparent !important;
+  background-color: var(--SecondaryColor) !important;
+}
+
+.actionButton:active {
+  box-shadow: none !important;
+  border-color: transparent !important;
+  background-color: var(--MainColor) !important;
+  /*on click*/
+}
+
+.actionButton:focus {
+  box-shadow: none;
+  border-color: transparent !important;
+  background-color: var(--LightGreyTrans);
+}
+
+.radioButton {
+  box-shadow: none;
+  border-color: transparent;
+  background-color: var(--LightGreyTrans);
+  z-index: 9998;
+  font-size: medium;
+  margin: 0 0 5 60;
+  color: var(--MainColor);
+}
+
+.radioButton:hover {
+  border-color: transparent !important;
+  background-color: var(--SecondaryColor) !important;
+  color: var(--LightGrey) !important;
+}
+
+.radioButton:active {
+  box-shadow: none !important;
+  border-color: transparent !important;
+  background-color: var(--MainColor) !important;
+  /*on click*/
+}
+
+.radioButton:focus {
+  box-shadow: none;
+  border-color: transparent !important;
+  background-color: var(--LightGreyTrans);
+}
+
+.btn-check:checked+.radioButton {
+  box-shadow: none !important;
+  border-color: transparent !important;
+  background-color: var(--SecondaryColor) !important;
+}

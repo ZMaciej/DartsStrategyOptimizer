@@ -87,6 +87,18 @@ function calculate()
     isResultPresented = true;
 }
 
+function changeResolution(resolution)
+{
+    calculationResolution = resolution;
+    heatMap = new HeatMap(calculationResolution);
+    heatMapView = new HeatMapView(heatMap);
+    distributionCalculator = new DistributionCalculator(hitRegistrator,
+        targetDimensions, targetHeightPercentage, heatMap);
+    optimalPointCalculator = new OptimalPointCalculator(distributionCalculator,
+        scoreCalculator, optimalResult);
+    isResultPresented = false;
+}
+
 function setUpInterface()
 {
     $('#buttonBack').on('click', function ()
@@ -108,11 +120,18 @@ function setUpInterface()
         heatMapView.setHeatMap(heatMap);
         isResultPresented = false;
     });
-    $('#buttonCompute').on('click',
-        function ()
-        {
-            calculate();
-        });
+    $('#buttonCompute').on('click', function ()
+    {
+        calculate();
+    });
+    $('#lowResolution').on('click', function ()
+    {
+        changeResolution(85);
+    });
+    $('#highResolution').on('click', function ()
+    {
+        changeResolution(175);
+    });
     $(function ()
     {
         $('[data-toggle="tooltip"]').tooltip()

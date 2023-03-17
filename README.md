@@ -1,5 +1,5 @@
-# DartsStategyOptimizer
+# DartsStrategyOptimizer
 
 Link to website:
 
-https://zmaciej.github.io/DartsStategyOptimizer/
+https://zmaciej.github.io/DartsStrategyOptimizer/

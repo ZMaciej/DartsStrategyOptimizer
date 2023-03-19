@@ -24,6 +24,7 @@ class OptimalPointCalculator
         let fullWidth = targetDimensions.bigDiameter;
         let width = fullWidth / centeredHeatMap.Resolution;
         this.AverageScoreHeatMap.resetMinMaxValues();
+        this.AverageScoreHeatMap.resetValues();
         var biggestSum = 0;
         var biggestSumX = null;
         var biggestSumY = null;

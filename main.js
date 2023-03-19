@@ -82,9 +82,40 @@ function mouseMoved()
 
 function calculate()
 {
-    optimalPointCalculator.calculate();
-    heatMapView.setHeatMap(optimalPointCalculator.AverageScoreHeatMap);
     isResultPresented = true;
+    optimalPointCalculator.PropertyChanged.addCallback(function ()
+    {
+        heatMapView.setHeatMap(optimalPointCalculator.AverageScoreHeatMap);
+        // background(255);
+        // heatMapView.draw(0, 0, canvasWidth, canvasHeight);
+        // targetView.draw(0, 0, canvasWidth, canvasHeight);
+        // if (isResultPresented)
+        // {
+        //     optimalResultView.drawResult();
+        // } else
+        // {
+        //     hitRegistratorView.drawHits();
+        // }
+    });
+
+    const dosomethingPromise = () =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            optimalPointCalculator.calculate();
+            resolve(true) /* return result here or you can use reject for execute catch block*/
+        })
+    };
+    Promise.resolve(dosomethingPromise())
+        .then((result) =>
+        {
+            /*your result come here*/
+            console.log("Progress finished=>", result);
+        }, (error) =>
+        {
+            console.log(error)
+        })
+        .catch(console.log);
 }
 
 function changeResolution(resolution)

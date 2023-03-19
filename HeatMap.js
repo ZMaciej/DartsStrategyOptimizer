@@ -19,6 +19,17 @@ class HeatMap
         this.minValue = Number.MAX_VALUE;
     }
 
+    resetValues()
+    {
+        for (let i = 0; i < this.HeatMatrix.length; i++)
+        {
+            for (let j = 0; j < this.HeatMatrix[i].length; j++)
+            {
+                this.HeatMatrix[i][j] = NaN;
+            }
+        }
+    }
+
     addValue(i, j, value)
     {
         this.HeatMatrix[i][j] = value;

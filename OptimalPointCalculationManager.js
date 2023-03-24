@@ -29,6 +29,7 @@ class OptimalPointCalculationManager
         {
             this.Ended = true;
         }
+        return chunk;
     }
 
     reset()

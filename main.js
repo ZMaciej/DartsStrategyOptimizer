@@ -15,6 +15,7 @@ function setup()
     targetHeightPercentage = 0.85;
     heatMap = new HeatMap(calculationResolution);
     canvas = createCanvas(canvasWidth, canvasHeight);
+    screenBuff = get(0, 0, canvasWidth, canvasHeight);
     canvas.parent("canvas");
     background(255);
     noStroke();
@@ -56,16 +57,22 @@ function draw()
     //draw loop only used for calculation
     if (calculationStarted)
     {
-        optimalPointCalculationManager.computeNextPart();
-        background(255);
-        heatMapView.draw(0, 0, canvasWidth, canvasHeight);
+        let chunk = optimalPointCalculationManager.computeNextPart();
+        image(screenBuff, 0, 0);
+        heatMapView.draw(0, 0, canvasWidth, canvasHeight, chunk);
+        screenBuff = get(0, 0, canvasWidth, canvasHeight);
         targetView.draw(0, 0, canvasWidth, canvasHeight);
         optimalResultView.drawResult();
 
         if (optimalPointCalculationManager.Ended)
         {
             noLoop();
+            calculationStarted = false;
         }
+    }
+    else
+    {
+        noLoop();
     }
 }
 
@@ -80,6 +87,7 @@ function mouseClicked(event)
         hitRegistrator.addHit(position[0], position[1], score);
         heatMapView.setHeatMap(heatMap);
         isResultPresented = false;
+        calculationStarted = false;
     }
     background(255);
     heatMapView.draw(0, 0, canvasWidth, canvasHeight);
@@ -99,6 +107,8 @@ function mouseMoved()
 
 function calculate()
 {
+    background(255);
+    screenBuff = get(0, 0, canvasWidth, canvasHeight);
     calculationStarted = true;
     isResultPresented = true;
     optimalPointCalculationManager.reset();

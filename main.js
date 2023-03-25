@@ -59,16 +59,22 @@ function draw()
     {
         let chunk = optimalPointCalculationManager.computeNextPart();
         image(screenBuff, 0, 0);
-        heatMapView.draw(0, 0, canvasWidth, canvasHeight, chunk);
-        screenBuff = get(0, 0, canvasWidth, canvasHeight);
-        targetView.draw(0, 0, canvasWidth, canvasHeight);
-        optimalResultView.drawResult();
 
-        if (optimalPointCalculationManager.Ended)
+
+        if (!optimalPointCalculationManager.Ended)
         {
+            heatMapView.draw(0, 0, canvasWidth, canvasHeight, chunk);
+            screenBuff = get(0, 0, canvasWidth, canvasHeight);
+        }
+        else
+        {
+            background(255);
             noLoop();
             calculationStarted = false;
+            heatMapView.draw(0, 0, canvasWidth, canvasHeight);
         }
+        targetView.draw(0, 0, canvasWidth, canvasHeight);
+        optimalResultView.drawResult();
     }
     else
     {

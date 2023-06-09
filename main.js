@@ -5,6 +5,7 @@ function preload()
 
 function setup()
 {
+    currentExampleIndex = 0;
     isResultPresented = false;
     canvasWidth = 850;
     canvasHeight = 850;
@@ -40,15 +41,20 @@ function setup()
         optimalPointCalculator);
     calculationStarted = false;
 
-    example = null;
+    examples = new Array();
     $.getJSON("data/example.json", function (json)
     {
-        example = json;
-        hitRegistratorManager._loadFromJson(example);
+        examples[0] = json;
+        hitRegistratorManager._loadFromJson(examples[0]);
         heatMapView.setHeatMap(heatMap);
         heatMapView.draw(0, 0, canvasWidth, canvasHeight);
         targetView.draw();
         hitRegistratorView.drawHits();
+    });
+
+    $.getJSON("data/secondExample.json", function (json)
+    {
+        examples[1] = json;
     });
 }
 
@@ -155,10 +161,11 @@ function setUpInterface()
     $('#buttonExample').on('click', function ()
     {
         hitRegistrator.clearHits()
-        hitRegistratorManager._loadFromJson(example);
+        hitRegistratorManager._loadFromJson(examples[currentExampleIndex]);
         heatMapView.setHeatMap(heatMap);
         isResultPresented = false;
         noLoop();
+        currentExampleIndex = (currentExampleIndex + 1) % 2;
     });
     $('#buttonCompute').on('click', function ()
     {
